@@ -10,6 +10,12 @@ use App\Models\User;
 
 class BlogController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');    
+    }
+
     public function index()
     {
         return view('blog.halamanutama');    
@@ -28,12 +34,14 @@ class BlogController extends Controller
         ]);
    
         $credentials = $request->only('email', 'password');
+ 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('blog')
-                        ->withSuccess('Signed in');
+            info('User logged in successfully:', ['email' => $request->email]);
+            return redirect()->intended('/')->withSuccess('Signed in');
         }
-  
-        return redirect()->to('loginblog');
+    
+        info('Login failed for user:', ['email' => $request->email]);
+        return redirect()->to('/login')->withErrors(['error' => 'These credentials do not match our records.']);
     }
 
     public function registrasi()
@@ -52,7 +60,7 @@ class BlogController extends Controller
         $data = $request->all();
         $check = $this->create($data);
 
-        return redirect('/blog/halamanutama')->withSuccess('Registrasi berhasil');
+        return redirect('/')->withSuccess('Registrasi berhasil');
     }
 
     public function create(array $data)
@@ -69,6 +77,17 @@ class BlogController extends Controller
         Session::flush();
         Auth::logout();
 
-        return redirect('/blog/login');
+        return redirect('/login');
+    }
+
+    public function getAllUsers()
+    {
+        $users = (new User())->all();
+        return response()->json($users, 200);    
+    }
+
+    public function adminpanel()
+    {
+        return view('blog.adminpanel');        
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,18 +16,24 @@ use App\Http\Controllers\BlogController;
 |
 */
 
+//dengan perintah ini akan memudahkan untuk membuat routes login dan logout sehinggak nggak perlu membuat lagi
+//kecuali yang di blog controller itu cuma custom aja
+
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 //login controller
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/home', [App\Http\Controllers\BlogController::class, 'index'])->name('home');
 //blog controller
-Route::get('/blog', [BlogController::class,'index'])->name('halamanutama');
-Route::get('/blog/login', [BlogController::class,'login'])->name('loginblog');
-Route::get('/blog/registrasi', [BlogController::class,'registrasi'])->name('registrasi');
-Route::post('/blog/postregistrasi', [BlogController::class,'postRegistrasi'])->name('postregistrasi');
-Route::post('/blog/postlogin', [BlogController::class,'customLogin'])->name('postloginblog');
+Route::get('/', [BlogController::class,'index'])->name('halamanutama');
+Route::get('/loginpage', [BlogController::class,'login'])->name('loginpage');
+Route::get('/registrasi', [BlogController::class,'registrasi'])->name('registrasi');
+Route::post('postregistrasi', [BlogController::class,'postRegistrasi'])->name('postregistrasi');
+Route::post('postlogin', [BlogController::class,'customLogin'])->name('postloginblog');
+Route::get('/logout', [BlogController::class,'logout'])->name('logoutbtn');
 
-Route::get('/blog/logout', [BlogController::class,'logout'])->name('logout');
+//middleware admin
+Route::get('admin/panel', [BlogController::class,'adminpanel'])->name('adminpanel');

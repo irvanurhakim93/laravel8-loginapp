@@ -20,7 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'isAdmin'
     ];
+
+    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -40,4 +43,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hasRole($role) 
+    {
+        if ($this->role == $role) {
+            return true;
+        }
+        
+        return false;
+    }
 }

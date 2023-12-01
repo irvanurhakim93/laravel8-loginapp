@@ -13,20 +13,25 @@
     <ul class="navbar-nav mr-auto">
       @guest
       <li class="nav-item active">
-        <a class="nav-link" href="{{route('loginblog')}} ">Login <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{route('loginpage')}} ">Login <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Register</a>
+        <a class="nav-link" href="{{route('registrasi')}}">Register</a>
       </li>
       @else
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+        <a class="nav-link" href="{{ route('logoutbtn') }}">Logout</a>
       </li>
       @endguest
+      @if(auth()->user()->isAdmin == 1)
+      <li class="nav-item">
+        <a href="{{route('adminpanel')}}" class="nav-link">Admin Panel</a>
+      </li>
+      @endif
     </ul>
   </div>
 </nav>
 <div class="container">
-    <h1>Selamat datang di blog saya</h1>
+    <h1>ini adalah halaman blog saya,halaman lain selain login bawaan</h1>
     </div>
 @endsection('content')
